@@ -147,22 +147,33 @@ def cmd_feed(args: argparse.Namespace, settings: Settings) -> int:
     table = Table(title=f"jobpilot feed ({len(items)})")
     table.add_column("date", style="dim", width=8)
     table.add_column("title", overflow="fold")
-    table.add_column("salary", width=19)
-    table.add_column("where", width=16)
-    table.add_column("lvl", width=7)
-    table.add_column("src", width=14)
-    table.add_column("dup", width=4, justify="right")
+    table.add_column("salary", width=19, overflow="fold")
+
+    width = console.width
+    show_where = width >= 92
+    show_level = width >= 100
+    show_source = width >= 118
+    if show_where:
+        table.add_column("where", width=16, overflow="fold")
+    if show_level:
+        table.add_column("lvl", width=7)
+    if show_source:
+        table.add_column("src", width=14)
+        table.add_column("dup", width=4, justify="right")
 
     for item in items:
-        table.add_row(
+        row = [
             item["published_label"],
             f"{item['title']}\n[dim]{item['company'] or '-'}[/dim]",
             item["salary"],
-            ", ".join(filter(None, [item["city"], item["work_format"]])) or "-",
-            item["experience"] or "-",
-            item["source"],
-            str(item["duplicates"]),
-        )
+        ]
+        if show_where:
+            row.append(", ".join(filter(None, [item["city"], item["work_format"]])) or "-")
+        if show_level:
+            row.append(item["experience"] or "-")
+        if show_source:
+            row.extend([item["source"], str(item["duplicates"])])
+        table.add_row(*row)
     console.print(table)
     return 0
 
