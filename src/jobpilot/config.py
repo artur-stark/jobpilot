@@ -45,7 +45,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    db_url: str = "sqlite:///data/jobpilot.db"
+    # absolute by default: the CLI must work from any working directory
+    db_url: str = Field(
+        default_factory=lambda: f"sqlite:///{(PROJECT_ROOT / 'data' / 'jobpilot.db').as_posix()}"
+    )
     config_dir: Path = PROJECT_ROOT / "config"
     data_dir: Path = PROJECT_ROOT / "data"
     user_agent: str = "jobpilot/0.1 (+https://github.com/artur-stark/jobpilot)"
