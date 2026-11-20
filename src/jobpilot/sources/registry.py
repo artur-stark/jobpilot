@@ -8,10 +8,12 @@ from jobpilot.config import SourceConfig
 from jobpilot.sources.base import BaseSource
 from jobpilot.sources.fake import FakeSource
 from jobpilot.sources.feed import FeedSource
+from jobpilot.sources.hh_rss import HhRssSource
 from jobpilot.sources.jsonapi import JsonApiSource
 
 SOURCE_KINDS: dict[str, type[BaseSource]] = {
     "feed": FeedSource,
+    "hh_rss": HhRssSource,
     "jsonapi": JsonApiSource,
     "fake": FakeSource,
 }

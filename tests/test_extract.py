@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 from jobpilot.normalize.extract import (
     canonical_url,
     clean_title,
@@ -10,6 +12,8 @@ from jobpilot.normalize.extract import (
     guess_language,
     guess_work_format,
     normalize_key,
+    parse_labeled_block,
+    parse_ru_date,
     parse_salary,
     strip_html,
 )
@@ -105,3 +109,31 @@ def test_extract_refs() -> None:
         "Подробности: https://career.habr.com/vacancies/1000170506",
     )
     assert refs == ["hh:987654", "habr:1000170506"]
+
+
+def test_parse_labeled_block_splits_collapsed_summary() -> None:
+    labels = {
+        "company": "Вакансия компании",
+        "created": "Создана",
+        "city": "Регион",
+    }
+    text = "Вакансия компании: Алабуга. Менеджмент Создана: 16.11.2026 Регион: Екатеринбург"
+    assert parse_labeled_block(text, labels) == {
+        "company": "Алабуга. Менеджмент",
+        "created": "16.11.2026",
+        "city": "Екатеринбург",
+    }
+
+
+def test_parse_labeled_block_handles_missing_values() -> None:
+    labels = {"company": "Вакансия компании", "salary": "Доход"}
+    assert parse_labeled_block("", labels) == {}
+    assert parse_labeled_block("без меток", labels) == {}
+    assert parse_labeled_block("Доход:", labels) == {"salary": ""}
+
+
+def test_parse_ru_date() -> None:
+    assert parse_ru_date("18.11.2026") == datetime(2026, 11, 18, tzinfo=UTC)
+    assert parse_ru_date("Создана: 1.2.2026") == datetime(2026, 2, 1, tzinfo=UTC)
+    assert parse_ru_date("не указан") is None
+    assert parse_ru_date("32.11.2026") is None

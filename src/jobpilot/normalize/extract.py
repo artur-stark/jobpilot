@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import html
 import re
+from datetime import UTC, datetime, tzinfo
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 try:  # selectolax >= 1.0 ships the lexbor backend only
@@ -274,3 +275,40 @@ def extract_refs(*texts: str) -> list[str]:
                 if ref not in found:
                     found.append(ref)
     return found
+
+
+def parse_labeled_block(text: str, labels: dict[str, str]) -> dict[str, str]:
+    """Split a summary block of ``Label: value`` pairs into a mapping.
+
+    Feeds usually collapse line breaks, so a value ends where the next known
+    label starts rather than at a newline: ``Вакансия компании: X Создана: Y``
+    still yields ``{"company": "X", "created": "Y"}``.
+    """
+    if not text or not labels:
+        return {}
+    alternation = "|".join(re.escape(label) for label in labels.values())
+    pattern = re.compile(rf"(?:{alternation})\s*:", re.IGNORECASE)
+    matches = list(pattern.finditer(text))
+    values: dict[str, str] = {}
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        raw_value = _SPACES.sub(" ", text[match.end():end]).strip()
+        value = raw_value.strip(" .;,")
+        known = match.group(0).rstrip(":").strip().lower()
+        for key, label in labels.items():
+            if label.lower() == known:
+                values[key] = value
+                break
+    return values
+
+
+def parse_ru_date(value: str, tz: tzinfo = UTC) -> datetime | None:
+    """Parse ``дд.мм.гггг`` (the format hh.ru uses in feed summaries)."""
+    match = re.search(r"(\d{1,2})\.(\d{1,2})\.(\d{4})", value or "")
+    if not match:
+        return None
+    day, month, year = (int(part) for part in match.groups())
+    try:
+        return datetime(year, month, day, tzinfo=tz)
+    except ValueError:
+        return None

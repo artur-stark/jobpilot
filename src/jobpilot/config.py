@@ -20,7 +20,7 @@ class SourceConfig(BaseModel):
     """One vacancy source as described in config/sources.yml."""
 
     id: str
-    kind: str = "feed"  # feed | jsonapi | fake
+    kind: str = "feed"  # feed | hh_rss | jsonapi | fake
     enabled: bool = True
     priority: int = 50
     url: str | None = None

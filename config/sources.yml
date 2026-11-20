@@ -1,11 +1,15 @@
 # Vacancy sources.
 #
 # kind: feed    - RSS/Atom, parsed by the generic feed adapter
+# kind: hh_rss  - hh.ru search RSS: same as feed, plus labelled summary parsing
+#                 (company / region / salary). No app or token needed - api.hh.ru
+#                 answers 403 anonymously, the RSS search does not.
 # kind: jsonapi - JSON API with dot-path mapping (added for hh / Trudvsem / ATS next)
 # kind: fake    - synthetic data, used for demos and offline tests
 #
 # priority: lower wins when the same vacancy comes from several sources.
 #   10 - company career page / ATS (first hand)
+#   15 - first hand board API/RSS (hh.ru)
 #   20 - curated job boards (Habr Career)
 #   30 - aggregators (Geekjob, Djinni)
 #   50 - unknown
@@ -13,6 +17,115 @@
 # Filters (Ekb + remote) are applied on top of these feeds in config/filters.yml.
 
 sources:
+  # --- hh.ru, Екатеринбург (area=3) -------------------------------------------
+  # professional_role 96 = Программист, разработчик; 124 = Тестировщик.
+  # order_by=publication_time keeps the feed to the newest 20 postings.
+  - id: hh_ekb_python
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=python&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_javascript
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=javascript&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_typescript
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=typescript&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_react
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=react&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_backend
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=backend&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_embedded
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=embedded&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_cpp
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=c%2B%2B&area=3&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb]
+
+  - id: hh_ekb_qa
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=qa&area=3&professional_role=124&order_by=publication_time
+    tags: [it, ru, ekb, qa]
+
+  # --- hh.ru, удалённо по РФ (area=113 + work_format=REMOTE) ------------------
+  # work_format is absent from the RSS summary, so it comes from `defaults`.
+  - id: hh_remote_python
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=python&area=113&work_format=REMOTE&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote]
+
+  - id: hh_remote_javascript
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=javascript&area=113&work_format=REMOTE&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote]
+
+  - id: hh_remote_backend
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=backend&area=113&work_format=REMOTE&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote]
+
+  - id: hh_remote_frontend
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=frontend&area=113&work_format=REMOTE&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote]
+
+  - id: hh_remote_embedded
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=embedded&area=113&work_format=REMOTE&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote]
+
+  - id: hh_remote_qa
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=qa&area=113&work_format=REMOTE&professional_role=124&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote, qa]
+
+  # --- hh.ru, вакансии с указанной вилкой ------------------------------------
+  - id: hh_ekb_python_salary
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=python&area=3&only_with_salary=true&professional_role=96&order_by=publication_time
+    tags: [it, ru, ekb, salary]
+
+  - id: hh_remote_python_salary
+    kind: hh_rss
+    priority: 15
+    url: https://hh.ru/search/vacancy/rss?text=python&area=113&work_format=REMOTE&only_with_salary=true&professional_role=96&order_by=publication_time
+    defaults: {work_format: remote}
+    tags: [it, ru, remote, salary]
+
   - id: habr_python
     kind: feed
     priority: 20

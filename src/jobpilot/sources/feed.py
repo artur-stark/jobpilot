@@ -116,6 +116,15 @@ class FeedSource(BaseSource):
 
     @staticmethod
     def _published(entry: object) -> datetime | None:
+        # ISO 8601 keeps sub-second precision, RFC 822 feeds fall back to struct_time
+        raw = entry.get("published") or entry.get("updated")
+        if raw:
+            try:
+                value = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+            except ValueError:
+                value = None
+            if value is not None:
+                return value if value.tzinfo else value.replace(tzinfo=UTC)
         parsed = entry.get("published_parsed") or entry.get("updated_parsed")
         if parsed:
             return datetime.fromtimestamp(calendar.timegm(parsed), tz=UTC)
