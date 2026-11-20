@@ -1,0 +1,42 @@
+# Hard filters, applied before scoring (step 3 of the roadmap).
+# The collector stores everything; filtering/scoring reads these settings.
+
+locations:
+  home_city: Екатеринбург
+  # hh area ids: 3 = Екатеринбург, 1261 = Свердловская область, 113 = Россия
+  home_area_ids: [3, 1261]
+  ru_area_id: 113
+  allow_remote_ru: true
+  allow_remote_intl: true
+  cities_allow: [Екатеринбург, Свердловская область, Москва, Санкт-Петербург]
+
+seniority:
+  target: [middle]
+  # junior is not dropped outright: allowed when the signal is strong
+  allow: [junior, middle, senior]
+  exclude_titles:
+    - junior
+    - intern
+    - trainee
+    - стажёр
+    - стажер
+    - "без опыта"
+    - ученик
+  allow_junior_if:
+    salary_min: 90000
+    company_whitelist: []
+
+# Signs of low-quality or scam postings, typical for the RU market.
+scam_patterns:
+  - вложить средства
+  - обучение за счёт кандидата
+  - оплатить доступ к базе
+  - регистрация ип обязательна
+  - доход от 200 000 без опыта
+  - работа с кассой и терминалами
+
+# Sources that resell other people's vacancies: keep them, but score lower.
+agency_markers:
+  - кадровое агентство
+  - рекрутинговое агентство
+  - hr-агентство

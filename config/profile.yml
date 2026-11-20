@@ -1,0 +1,67 @@
+# Candidate profile: the fuel for scoring and cover letters.
+#
+# RULE: only real facts go here. The letter generator validates every number,
+# technology and company name against this file, so a fact that is not written
+# here will never appear in an outgoing message.
+#
+# Four personas instead of one broad resume: a recruiter must understand in
+# 8 seconds who you are for THIS vacancy.
+# Field `weight` ranks personas when their scores are close.
+
+personas:
+  - id: python_backend
+    weight: 1.0
+    target_titles:
+      - Python разработчик
+      - Backend developer
+      - Python engineer
+      - Разработчик Python
+    must_have: [python, sql, linux, git]
+    nice_have: [fastapi, django, docker, postgresql, redis, asyncio, rest, pytest]
+    exclude: [1С, bitrix, "только продажи"]
+
+  - id: js_fullstack
+    weight: 1.0
+    target_titles:
+      - Frontend разработчик
+      - Fullstack разработчик
+      - JavaScript разработчик
+      - React разработчик
+    must_have: [javascript, typescript, react, git]
+    nice_have: [node, next, rest, css, sql, vite, jest]
+
+  - id: embedded
+    weight: 1.0
+    target_titles:
+      - Embedded разработчик
+      - Инженер-программист
+      - C/C++ разработчик
+      - Инженер по прошивкам
+    must_have: [c, cpp, git]
+    nice_have: [mcu, uart, spi, i2c, rtos, freertos, can, linux, python, debug]
+
+  - id: automation_qa
+    weight: 1.0
+    target_titles:
+      - QA automation
+      - Автотестировщик
+      - Automation engineer
+      - Инженер по тестированию
+    must_have: [python, pytest, git]
+    nice_have: [playwright, selenium, ci, rest, sql, api-testing, docker]
+
+# Achievements with numbers. Fill in with real work: pet projects, study
+# projects, freelance tasks, even a parser you wrote for yourself.
+facts: []
+#  - text: "Написал парсер вакансий: 5 RSS-источников, дедупликация по отпечатку, 1200 записей/мин"
+#    tags: [python, httpx, sqlite]
+#  - text: "Собрал Telegram-бота на aiogram для 3 каналов: 400 подписчиков"
+#    tags: [python, asyncio]
+
+# Projects cited in cover letters. `stack` is matched against vacancy
+# requirements, so the most relevant project is picked automatically.
+projects: []
+#  - name: jobpilot
+#    url: https://github.com/artur-stark/jobpilot
+#    stack: [python, httpx, sqlite, pytest, rss]
+#    highlights: "сбор 5 источников, дедупликация, CLI на rich"

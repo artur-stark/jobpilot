@@ -1,0 +1,50 @@
+# Vacancy sources.
+#
+# kind: feed    - RSS/Atom, parsed by the generic feed adapter
+# kind: jsonapi - JSON API with dot-path mapping (added for hh / Trudvsem / ATS next)
+# kind: fake    - synthetic data, used for demos and offline tests
+#
+# priority: lower wins when the same vacancy comes from several sources.
+#   10 - company career page / ATS (first hand)
+#   20 - curated job boards (Habr Career)
+#   30 - aggregators (Geekjob, Djinni)
+#   50 - unknown
+#
+# Filters (Ekb + remote) are applied on top of these feeds in config/filters.yml.
+
+sources:
+  - id: habr_python
+    kind: feed
+    priority: 20
+    url: https://career.habr.com/vacancies/rss?q=python&remote=true
+    tags: [it, ru, remote]
+
+  - id: habr_javascript
+    kind: feed
+    priority: 20
+    url: https://career.habr.com/vacancies/rss?q=javascript&remote=true
+    tags: [it, ru, remote]
+
+  - id: habr_embedded
+    kind: feed
+    priority: 20
+    url: https://career.habr.com/vacancies/rss?q=embedded&remote=true
+    tags: [it, ru, remote]
+
+  - id: geekjob
+    kind: feed
+    priority: 30
+    url: https://geekjob.ru/vacancies/rss
+    tags: [it, ru]
+
+  - id: djinni
+    kind: feed
+    priority: 30
+    url: https://djinni.co/jobs/rss/
+    tags: [it, ua, remote]
+
+  - id: demo
+    kind: fake
+    enabled: false
+    priority: 50
+    tags: [demo]
