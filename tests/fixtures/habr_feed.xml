@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Вакансии — Хабр Карьера</title>
+    <description>Вакансии — Хабр Карьера</description>
+    <link>https://career.habr.com/vacancies/rss</link>
+    <language>ru</language>
+    <item>
+      <title>Требуется «Стажировка Python разработчик (FastAPI)» (от 40 000 до 60 000 ₽)</title>
+      <description>Компания «Pulsea» ищет хорошего специалиста на вакансию «Стажировка Python разработчик (FastAPI)». От 40 000 ₽ до 60 000 ₽. Полный рабочий день. Можно удалённо. Требуемые навыки: #intern, #Python, #Git, #SQL, #PostgreSQL, #Docker, #REST, #FastAPI, #Pytest, #ООП.</description>
+      <author>Pulsea</author>
+      <pubDate>Thu, 19 Nov 2026 14:28:27 +0300</pubDate>
+      <link>https://career.habr.com/vacancies/1000170506</link>
+      <guid>1000170506</guid>
+    </item>
+    <item>
+      <title>Требуется «Python-разработчик» (от 150 000 ₽)</title>
+      <description>Компания «Уралкод» ищет специалиста на вакансию «Python-разработчик». От 150 000 ₽. Екатеринбург, Россия. Полный рабочий день. Уровень Middle. Требуемые навыки: #Python, #FastAPI, #PostgreSQL.</description>
+      <author>Уралкод</author>
+      <pubDate>Wed, 18 Nov 2026 09:00:00 +0300</pubDate>
+      <link>https://career.habr.com/vacancies/1000170001?utm_source=rss&amp;utm_medium=feed</link>
+      <guid>1000170001</guid>
+    </item>
+  </channel>
+</rss>
